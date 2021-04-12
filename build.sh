@@ -29,11 +29,19 @@ if [ ${binonly} -eq 0 ]; then
     rm -rf build
   fi
   mkdir -p build/install
+  mkdir -p build/gflags
   mkdir -p build/opencv
 fi
 
 if [ ${binonly} -eq 0 ]; then
   echo "[${0}] build libraries ..."
+  cd build/gflags &&
+  cmake -G "${mkfiletype}" \
+    -D CMAKE_BUILD_TYPE="${buildtype}" \
+    -D CMAKE_FIND_ROOT_PATH="../install" \
+    -D CMAKE_INSTALL_PREFIX="../install" \
+    ../../gflags &&
+  cmake --build . && ${mkbin} install && cd -
   cd build/opencv &&
   cmake -G "${mkfiletype}" \
     -D CMAKE_BUILD_TYPE="${buildtype}" \
